@@ -26,8 +26,7 @@ int main(){
 
     // task 2
     double **p = 0;
-    p = new double*;
-    *p = new double {2};
+    p = new double* {new double {2}};
     cout << **p;
     delete *p;
     delete p;
