@@ -1,20 +1,17 @@
 #include <iostream>
 #include <vector>
+#include <memory>
 
 using namespace std;
 
 int main(){
     //task 1
     vector<int> vect(5);
-    vector<int> vect1(5, 2);           
-    vector<int> vect2{1, 2, 3, 4, 5};
     int* arr1 = new int[5];
-    int* arr2 = new int[5] {1, 2, 3, 4, 5};
     int arr3[5] = {1, 2, 3, 4, 5};
     int* arr4 = (int *) malloc(sizeof(int) * 5);
     int * arr5 = (int *) calloc(5, sizeof(int));
-    int* arr6;
-    arr6 = (int *) realloc(arr6, 5 * sizeof(int));
+    auto arr6 {make_unique<int*>(5)};
 
     /*for (int i = 0; i < 5; i++){
         arr6[i] = i;
