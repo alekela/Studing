@@ -25,6 +25,13 @@ int main(){
     cin >> word;
     int len = word.length();
     for (int i = 0; i < len; i++){
+        if (not check(alphabet, word[i])){
+            cout << "Вы неккоректно ввели слово!";
+            exit(-1);
+        }
+    }
+
+    for (int i = 0; i < len; i++){
         shown_word.push_back('-');
     }
     bool flag = true;
