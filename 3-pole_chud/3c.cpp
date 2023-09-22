@@ -1,5 +1,6 @@
 #include <iostream>
 #include <string.h>
+#include <windows.h>
 
 using namespace std;
 
@@ -13,8 +14,8 @@ int check(string str, char letter){
 }
 
 int main(){
-    // проблема с русской локализацией
-
+    SetConsoleCP(1251);
+    SetConsoleOutputCP(1251);
     string word;
     string alphabet = "qwertyuiopasdfghjklzxcvbnm";
     string used_letters = "";
