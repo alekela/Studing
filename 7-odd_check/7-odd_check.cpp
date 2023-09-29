@@ -1,7 +1,6 @@
 #include <iostream>
-#include <ctime>
+#include <chrono>
 
-using namespace std;
 
 bool check_bites(unsigned int a) {
     return not (a << 31);
@@ -20,27 +19,34 @@ bool usual_check(unsigned int a) {
 }
 
 
-int main() {
-    clock_t start, finish;
-    long long int n = 300000;
-    unsigned int numbers[n];
-    for (int i = 0; i < n; i++) {
-        numbers[i] = i + 1;
-    }
+bool check_bites3(unsigned int a){
+    return not (a & 1 == 0);
+}
+
+
+double benchmark(bool func(unsigned int)) {
+    long long int n = 5000000000;
     bool result;
 
-    time_t res = time(nullptr);
-    start = clock();
+    auto start = std::chrono::high_resolution_clock::now();
     for (int i = 0; i < n; i++) {
-        result = usual_check(numbers[i]);
+        result = func(i);
     }
-    finish = clock();
-    cout << "Time of one cycle of usual_check: " << ((float) finish - (float) start) / CLOCKS_PER_SEC  << endl;
+    auto finish = std::chrono::high_resolution_clock::now();
 
-    start = clock();
-    for (int i = 0; i < n; i++) {
-        result = check_bites(numbers[i]);
+    std::chrono::duration<double> duration = finish - start;
+    return duration.count() * 1000;
+}
+
+
+int main() {
+    double alpha = 0;
+    int n = 10;
+    for (int k = 0; k < n; k++) {
+        double t1 = benchmark(usual_check);
+        double t2 = benchmark(check_bites);
+        alpha += t2 / t1;
+        std::cout << t2 / t1 << std::endl;
     }
-    finish = clock();
-    cout << "Time of one cycle of check_bites: " << (double)(finish - start) / CLOCKS_PER_SEC;
+    std::cout << "Побитовый быстрее классики на " << (1 - alpha / n) * 100 << " %";
 }
