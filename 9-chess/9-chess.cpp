@@ -168,7 +168,7 @@ void algorithm(array<array<int, 8>, 8>& field, bool queue) {
     }
 }
 
-
+// доработать чек и, возможно, алгоритм
 bool check(array<array<int, 8>, 8>& field) {
     int bkcol, bkrow, wkcol, wkrow, wrrow, wrcol;
     for (int i = 0; i < 8; i++) {
