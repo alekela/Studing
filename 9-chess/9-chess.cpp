@@ -108,7 +108,7 @@ void get_pos(array<array<int, 8>, 8>& field) {
             }
         }
     }
-    if (abs(startcol - col) < 2 && abs(startrow - row) < 2) {
+    if (0 < abs(startcol - col) < 2 && 0 < abs(startrow - row) < 2) {
         if (figure == 'K') {
             field[row][col] = 1;
             field[startrow][startcol] = 0;
@@ -136,11 +136,11 @@ void algorithm(array<array<int, 8>, 8>& field, bool queue) {
         }
     }
 
-    if (abs(wrrow - wkrow) > 1 && sign(wrrow - wkrow) == sign(bkrow - wkrow)) {
+    if (abs(wrrow - wkrow) > 1 || sign(wrrow - wkrow) != sign(bkrow - wkrow)) {
         field[wrrow][wrcol] = 0;
         field[wkrow + sign(bkrow - wkrow)][wrcol] = 3;
     }
-    else if (abs(wrcol - wkcol) > 1 && sign(wrcol - wkcol) == sign(bkcol - wkcol)) {
+    else if (abs(wrcol - wkcol) > 1 || sign(wrcol - wkcol) != sign(bkcol - wkcol)) {
         field[wrrow][wrcol] = 0;
         field[wrrow][wkcol + sign(bkcol - wkcol)] = 3;
     }
@@ -168,7 +168,7 @@ void algorithm(array<array<int, 8>, 8>& field, bool queue) {
     }
 }
 
-// доработать чек и, возможно, алгоритм
+
 bool check(array<array<int, 8>, 8>& field) {
     int bkcol, bkrow, wkcol, wkrow, wrrow, wrcol;
     for (int i = 0; i < 8; i++) {
@@ -231,6 +231,23 @@ int main() {
             field[i][j] = 0;
         }
     }
-    playing(field);
+    random_place(field);
+    print_board(field);
+    bool queue = false;
+    bool flag = true;
+    while (flag) {
+        get_pos(field);
+        print_board(field);
+        algorithm(field, queue);
+        queue = queue? queue = false : queue = true;
+        print_board(field);
+        if (check(field)) {
+            cout << "0";
+            flag = false;
+        }
+        else {
+            cout << "1" << endl;
+        }
+    }
 
 }
