@@ -112,12 +112,16 @@ void get_pos(array<array<int, 8>, 8>& field) {
         if (figure == 'K') {
             field[row][col] = 1;
             field[startrow][startcol] = 0;
+            if (not check(field)) {
+                field[row][col] = 0;
+                field[startrow][startcol] = 1;
+            }
         }
     }
 }
 
 
-void algorithm(array<array<int, 8>, 8>& field, bool queue) {
+void algorithm(array<array<int, 8>, 8>& field) {
     int bkcol, bkrow, wkcol, wkrow, wrrow, wrcol;
     for (int i = 0; i < 8; i++) {
         for (int j = 0; j < 8; j++) {
@@ -135,36 +139,40 @@ void algorithm(array<array<int, 8>, 8>& field, bool queue) {
             }
         }
     }
-
-    if (abs(wrrow - wkrow) > 1 || sign(wrrow - wkrow) != sign(bkrow - wkrow)) {
+    if (abs(bkcol - wkcol) == 1 && abs(bkrow - wkrow) == 2) {
         field[wrrow][wrcol] = 0;
-        field[wkrow + sign(bkrow - wkrow)][wrcol] = 3;
+        field[wrrow][wkcol] = 3;
     }
-    else if (abs(wrcol - wkcol) > 1 || sign(wrcol - wkcol) != sign(bkcol - wkcol)) {
+    else if (abs(bkcol - wrcol) < 2 && abs(bkrow - wrrow) < 2) {
         field[wrrow][wrcol] = 0;
-        field[wrrow][wkcol + sign(bkcol - wkcol)] = 3;
-    }
-
-    else if (abs(wrrow - bkrow) > 1) {
-        if (queue) {
-            field[wrrow + sign(bkrow - wrrow)][wrcol] = 3;
-            field[wrrow][wrcol] = 0;
+        if (bkcol + 4 < 8) {
+            field[wrrow][bkcol + 4] = 3;
         }
         else {
-            field[wkrow + sign(bkrow - wkrow)][wkcol] = 2;
-            field[wkrow][wkcol] = 0;
+            field[wrrow][bkcol - 4] = 3;
         }
     }
-
-    else if (abs(wrcol - bkcol) > 1) {
-        if (queue) {
-            field[wrrow][wrcol + sign(bkcol - wrcol)] = 3;
+    else if (abs(bkrow - wrrow) > 1) {
+        if (abs(bkcol - wrcol) < 2) {
             field[wrrow][wrcol] = 0;
+            field[bkrow + 2 * sign(wkrow - bkrow)][wrcol] = 3;
         }
         else {
-            field[wkrow][wkcol + sign(bkcol - wkcol)] = 2;
-            field[wkrow][wkcol] = 0;
+            field[wrrow][wrcol] = 0;
+            field[bkrow + sign(wkrow - bkrow)][wrcol] = 3;
         }
+    }
+    else if (abs(wkrow - bkrow) > 2) {
+        field[wkrow][wkcol] = 0;
+        field[wkrow + sign(bkrow - wkrow)][wkcol] = 2;
+    }
+    else if (abs(bkrow - wrrow) == 1 && abs(bkcol - wrcol) > 1 && abs(bkrow - wkrow) == 2 && bkcol == wkcol) {
+        field[wrrow][wrcol] = 0;
+        field[wrrow + sign(bkrow - wkrow)][wrcol] = 3;
+    }
+    else {
+        field[wkrow][wkcol] = 0;
+        field[wkrow][wkcol + sign(bkcol - wkcol)] = 2;
     }
 }
 
@@ -187,34 +195,10 @@ bool check(array<array<int, 8>, 8>& field) {
             }
         }
     }
-    if (bkcol == 7 && bkrow == 7 || bkcol == 0 && bkrow == 7 || bkcol == 7 && bkrow == 0 || bkcol == 0 && bkrow == 0) {
-        if (abs(wrrow - bkrow) == 1 && abs(wrcol - bkcol) == 1) {
-            return true;
-        }
+    if (bkcol == wrcol || bkrow == wrrow || (abs(wkcol - bkcol) == 1 && abs(wkrow - bkrow) == 1)) {
+        return true;
     }
     return false;
-}
-
-
-void playing(array<array<int, 8>, 8>& field) {
-    random_place(field);
-    print_board(field);
-    bool queue = false;
-    bool flag = true;
-    while (flag) {
-        get_pos(field);
-        print_board(field);
-        algorithm(field, queue);
-        queue = queue? queue = false : queue = true;
-        print_board(field);
-        if (check(field)) {
-            cout << "0";
-            flag = false;
-        }
-        else {
-            cout << "1" << endl;
-        }
-    }
 }
 
 
@@ -233,21 +217,16 @@ int main() {
     }
     random_place(field);
     print_board(field);
-    bool queue = false;
     bool flag = true;
     while (flag) {
         get_pos(field);
         print_board(field);
-        algorithm(field, queue);
-        queue = queue? queue = false : queue = true;
+        algorithm(field);
         print_board(field);
         if (check(field)) {
-            cout << "0";
             flag = false;
-        }
-        else {
-            cout << "1" << endl;
         }
     }
 
 }
+
