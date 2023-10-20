@@ -65,6 +65,31 @@ void random_place(array<array<int, 8>, 8>& field) {
 }
 
 
+bool check(array<array<int, 8>, 8>& field) {
+    int bkcol, bkrow, wkcol, wkrow, wrrow, wrcol;
+    for (int i = 0; i < 8; i++) {
+        for (int j = 0; j < 8; j++) {
+            if (field[i][j] == 1) {
+                bkcol = j;
+                bkrow = i;
+            }
+            else if (field[i][j] == 2) {
+                wkcol = j;
+                wkrow = i;
+            }
+            else if (field[i][j] == 2) {
+                wrcol = j;
+                wrrow = i;
+            }
+        }
+    }
+    if (bkcol == wrcol || bkrow == wrrow || (abs(wkcol - bkcol) == 1 && abs(wkrow - bkrow) == 1)) {
+        return true;
+    }
+    return false;
+}
+
+
 void print_board(array<array<int, 8>, 8>& field) {
     for (int i = 0; i < 8; i++) {
         for (int j = 0; j < 8; j++) {
@@ -81,24 +106,26 @@ void print_board(array<array<int, 8>, 8>& field) {
                 cout << "WR ";
             }
         }
-        cout << "\n";
+        cout << abs(i - 8) << "\n";
     }
-    cout << "\n";
+    cout << " a  b  c  d  e  f  g  h\n";
 }
 
 
 void get_pos(array<array<int, 8>, 8>& field) {
     string input;
-    char figure;
     int row;
     int col;
     cin >> input;
-    figure = input[0];
     col = input[1] - 'a';
-    row = input[2] - '0' - 1;
+    row = 8 - (input[2] - '0');
+
     int startrow, startcol;
-    if (row > 7 || row < 0 || col > 7 || col < 0) {
-        return;
+    while (row > 7 || row < 0 || col > 7 || col < 0) {
+        cout << "Вы ввели некорректную позицию, CLTk это ещё раз" << endl;
+        cin >> input;
+        col = input[1] - 'a';
+        row = 8 - (input[2] - '0');
     }
     for (int i = 0; i < 8; i++) {
         for (int j = 0; j < 8; j++) {
@@ -108,15 +135,19 @@ void get_pos(array<array<int, 8>, 8>& field) {
             }
         }
     }
-    if (0 < abs(startcol - col) < 2 && 0 < abs(startrow - row) < 2) {
-        if (figure == 'K') {
-            field[row][col] = 1;
-            field[startrow][startcol] = 0;
-            if (not check(field)) {
-                field[row][col] = 0;
-                field[startrow][startcol] = 1;
-            }
-        }
+
+    
+    field[row][col] = 1;
+    field[startrow][startcol] = 0;
+    while (check(field) && !(0 < abs(startcol - col) < 2 && 0 < abs(startrow - row) < 2)) {
+        field[row][col] = 0;
+        field[startrow][startcol] = 1;
+        cout << "Вы ввели некорректную позицию, сделайте это ещё раз" << endl;
+        cin >> input;
+        col = input[1] - 'a';
+        row = 8 - (input[2] - '0');
+        field[row][col] = 1;
+        field[startrow][startcol] = 0;
     }
 }
 
@@ -177,31 +208,6 @@ void algorithm(array<array<int, 8>, 8>& field) {
 }
 
 
-bool check(array<array<int, 8>, 8>& field) {
-    int bkcol, bkrow, wkcol, wkrow, wrrow, wrcol;
-    for (int i = 0; i < 8; i++) {
-        for (int j = 0; j < 8; j++) {
-            if (field[i][j] == 1) {
-                bkcol = j;
-                bkrow = i;
-            }
-            else if (field[i][j] == 2) {
-                wkcol = j;
-                wkrow = i;
-            }
-            else if (field[i][j] == 2) {
-                wrcol = j;
-                wrrow = i;
-            }
-        }
-    }
-    if (bkcol == wrcol || bkrow == wrrow || (abs(wkcol - bkcol) == 1 && abs(wkrow - bkrow) == 1)) {
-        return true;
-    }
-    return false;
-}
-
-
 int main() {
     /*
     black king - 1
@@ -229,4 +235,3 @@ int main() {
     }
 
 }
-
