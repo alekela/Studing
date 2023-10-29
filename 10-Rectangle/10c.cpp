@@ -1,5 +1,5 @@
 #include <iostream>
-#include "Rectangle.cpp"
+#include "Rectangle.h"
 
 int main() {
     Rectangle rect1(1, 4, 3, 2), rect2(2, 3, 4, 1);
