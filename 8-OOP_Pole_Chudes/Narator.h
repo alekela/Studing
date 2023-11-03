@@ -20,7 +20,7 @@ class Narator {
     private:
     int check_error(char letter);
     string used_letters;
-    string appropriate_letters = "��������������������������������";
+    string appropriate_letters = "йцукенгшщзхъфывапролджэячсмитьбюё";
     Output_word hidden_word;
     string player_name;
 };
