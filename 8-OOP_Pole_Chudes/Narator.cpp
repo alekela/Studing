@@ -1,5 +1,3 @@
-#include <iostream>
-#include <vector>
 #include "Narator.h"
 
 using namespace std;
@@ -10,28 +8,28 @@ void Narator::set_word(string word) {
 }
 
 void Narator::say_start() {
-    cout << "��� ��� �����, �����?" << endl;
+    cout << "Как Вас зовут, игрок?" << endl;
     cin >> player_name;
-    cout << "����� ���������� �� ���� ���� �����, " << player_name << ", ������ ����!" << endl;
+    cout << "Добро пожаловать в игру, " << player_name << ", давайте начнём!" << endl;
 }
 
 void Narator::get_letter() {
     hidden_word.print_word();
     char letter;
-    cout << player_name << ", �������� �����:" << endl;
+    cout << player_name << ", введите букву:" << endl;
     cin >> letter;
     while (check_error(letter)) {
-        cout << "� ��� �� ������? ����� ����� ���� ��� � ��������..." << endl;
+        cout << "У вас всё хорошо? Такой буквы даже нет в алфавите..." << endl;
         hidden_word.print_word();
-        cout << player_name << ", �������� �����:" << endl;
+        cout << player_name << ", введите букву:" << endl;
         cin >> letter;
     }
     int ans = hidden_word.check_letter(letter);
     if (ans) {
-        cout << "�����!!! �������� ����� " << letter << "!!!" << endl;
+        cout << "Верно!!! Откройте букву " << letter << "!!!" << endl;
     }
     else {
-        cout << "��������, ����� ����� � ����� ���!" << endl;
+        cout << "Неправильно, такой буквы в слове нет!" << endl;
     }
 }
 
