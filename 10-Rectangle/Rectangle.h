@@ -1,5 +1,5 @@
-#ifndef ABDUL
-#define ABDUL
+#ifndef RECTANGLE
+#define RECTANGLE
 
 
 using namespace std;
