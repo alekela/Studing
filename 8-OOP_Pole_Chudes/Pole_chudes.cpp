@@ -21,7 +21,7 @@ bool Pole_chudes::check_end() {
 
 void Pole_chudes::end_game() {
     char ans;
-    cout << "������ ������ ����� ����? Y/N";
+    cout << "Хотите начать новую игру? Y/N";
     cin >> &ans;
     if (ans == 'Y' || ans == 'y') {
         start_game();
