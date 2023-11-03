@@ -15,7 +15,7 @@ class Pole_chudes {
         void end_game();
 
         Narator narator;
-        string dictionary[3] = {"���������", "�������", "��������"};
+        string dictionary[3] = {"стегозавр", "мельница", "чебурашка"};
         int dictionary_len = 3;
 }; 
 
