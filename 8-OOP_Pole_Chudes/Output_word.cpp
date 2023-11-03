@@ -1,4 +1,3 @@
-#include <vector>
 #include "Output_word.h"
 
 using namespace std;
