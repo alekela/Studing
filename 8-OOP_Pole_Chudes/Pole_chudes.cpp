@@ -1,5 +1,4 @@
 #include <windows.h>
-#include <iostream>
 #include "Pole_chudes.h"
 #include <ctime>
 
