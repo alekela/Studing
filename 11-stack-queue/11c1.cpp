@@ -76,10 +76,6 @@ int main(){
     }*/
 
     const int n = 4;
-    int a[n];
-    for (int i = 1; i < n + 1; i++) {
-        a[i - 1] = i; 
-    }
     Queue q(4, 1, 2, 3, 4);
     for (int i = 0; i < n; i++) {
         cout << q.pop() << " ";
