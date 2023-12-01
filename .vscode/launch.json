@@ -1,7 +1,7 @@
 {
     "configurations": [
         {
-            "name": "C/C++: g++.exe build and debug active file",
+            "name": "g++.exe build and debug file",
             "type": "cppdbg",
             "request": "launch",
             "program": "${fileDirname}\\${fileBasenameNoExtension}.exe",
@@ -28,7 +28,7 @@
         },
 
         {
-            "name": "Pusk",
+            "name": "Build and debug files with make",
             "type": "cppdbg",
             "request": "launch",
             "program": "${fileDirname}\\${fileBasenameNoExtension}.exe",
@@ -45,7 +45,7 @@
                     "ignoreFailures": true
                 }
             ],
-            "preLaunchTask": "clean_make"
+            "preLaunchTask": "Build files with make"
         }
     ],
     "version": "2.0.0"
