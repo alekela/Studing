@@ -1,4 +1,4 @@
-all: main.exe clean
+all: main.exe clean run
 
 main.exe: main.o Rational.o
 	g++ main.o Rational.o -o main.exe -g
@@ -11,3 +11,6 @@ Rational.o: Rational.cpp
  
 clean:
 	rm -rf *.o
+
+run: main.exe
+	./main.exe
