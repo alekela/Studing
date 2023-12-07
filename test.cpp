@@ -9,7 +9,6 @@ T min(T&a, T&b) {
     return a < b ? a : b;
 }
 
-
 int main() {
     string s1 = "123";
     string s2 = "234";
