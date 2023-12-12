@@ -11,58 +11,6 @@ typedef struct node_tree{
     int key;
 } Node;
 
-typedef struct node_queue {
-    const void*  ptr;
-    struct node_queue* next;
-} node_t;
-
-typedef struct {
-    node_t* head;
-    node_t* tail;
-} queue_t;
-
-
-void  queue_init(queue_t* q){
-    q->head = NULL;
-    q->tail = NULL;
-}
-
-int   queue_empty(queue_t* q) {
-    return (q->head == NULL);
-}
-
-const void* queue_front(queue_t* q) {
-    return q->head->ptr;
-}
-
-
-int queue_push(queue_t* q, const void* ptr){
-    node_t* p = (node_t*)malloc(sizeof(node_t));
-    if(p != NULL){
-        p->ptr  = ptr;
-        p->next = NULL;
-        if(q->head == NULL)
-            q->head = q->tail = p;
-        else {
-            q->tail->next = p;
-            q->tail = p;
-        }
-    }
-    return (p != NULL);
-}
-
-
-void queue_pop(queue_t* q){
-    node_t* t;
-    if(q->head != NULL){
-        t       = q->head;
-        q->head = q->head->next;
-        free(t);
-        if(q->head == NULL)
-            q->tail = NULL;
-    }
-}
-
 
 void insert(Node **p, int val) {
     if ((*p) == NULL) {
@@ -81,70 +29,12 @@ void insert(Node **p, int val) {
 }
 
 
-void lnrOrder(Node *p) {
-    if (p != NULL) {
-        lnrOrder(p->left);
-        printf("%d ", p->key);
-        lnrOrder(p->right);
-    }
-}
-
-
 void preOrder(Node *p) {
     if (p != NULL) {
         printf("%3d", p->key);
         preOrder(p->left);
         preOrder(p->right);
     }
-}
-
-
-int levels(Node *p, int level){
-    if (p->right == NULL && p->left == NULL){
-        return 0;
-    }
-    int p1, p2;
-    p1 = levels(p->left, level);
-    p2 = levels(p->right, level);
-    if (p1 > p2){
-        return ++p1;
-    }
-    return ++p2;
-}
-
-
-int summ_leaves(Node *p, int s) {
-    if (p != NULL) {
-        if (p->right == NULL && p->left == NULL) {
-            return p->key;
-        }
-        int s1, s2;
-        s1 = summ_leaves(p->left, s);
-        s2 = summ_leaves(p->right, s);
-        return s1 + s2;
-    }
-    return 0;
-}
-
-
-void breadth_Order(Node* root){
-    Node* p;
-    queue_t q;
-    queue_init(&q);
-
-    queue_push(&q, root);
-    while(! queue_empty(&q)){
-        p = (Node*) queue_front(&q);
-        queue_pop(&q);
-        //выводим
-        printf("%d ", p->key);
-
-        if(p->left != NULL)
-            queue_push(&q, p->left);
-        if(p->right != NULL)
-            queue_push(&q, p->right);
-    }
-    printf("\n");
 }
 
 
@@ -235,17 +125,6 @@ int del(Node **p, int value){
 }
 
 
-void interval_del(Node *p, int a, int b) {
-    if (p != NULL) {
-        for (int i = a; i <= b; i++) {
-            if (find(p, i) != NULL) {
-                del(&p, i);
-            }
-        }
-    }
-}
-
-
 int main() {
     Node *root = NULL;
     int tmp;
@@ -257,8 +136,6 @@ int main() {
 
     preOrder(root);
     printf("\n");
-    //breadth_Order(root);
-    //printf("\n");
 
     int value, error;
     scanf("%d", &value);
@@ -268,7 +145,4 @@ int main() {
     }
     preOrder(root);
     printf("\n");
-
-    int s = 0;
-    printf("%d\n", summ_leaves(root, s));
 }
