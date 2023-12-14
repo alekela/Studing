@@ -12,8 +12,10 @@ int main() {
     SetConsoleCP(1251);
     SetConsoleOutputCP(1251);
     setlocale(LC_ALL, "Russian");
-    map<char, long int> freqs;
-    string alphabet = "¸יצףךוםדרשחץתפûגאןנמכהז‎ÿקסלטעüב‏"; 
+    map<int, long int> freqs;
+    int alphabet[33] = {'¸', 'י', 'צ','ף','ך','ו','ם','ד','ר',
+    'ש','ח','ץ','ת','פ','û','ג','א','ן','נ','מ','כ','ה','ז','‎',
+    'ÿ','ק','ס','ל','ט','ע','ü','ב','‏'};
     for (int i = 0; i < 33; i++) {
         freqs[alphabet[i]] = 0;
     }
@@ -24,8 +26,10 @@ int main() {
     file >> data;
     while (file) {
         // מבנאבמעךא data
-        for (auto& i : data) {
-            i = tolower(i);
+        for (auto i : data) {
+            if (i < -32 && i > -65) {
+                i += 32;
+            }
             freqs[i]++;
         }
         file >> data;

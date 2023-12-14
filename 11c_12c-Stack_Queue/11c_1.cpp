@@ -41,18 +41,6 @@ class Queue : public Interface {
     private:
         vector<int> p;
     public:
-        /*Queue(int size, ...) {
-            va_list factor;       
-            va_start(factor, size);
-            for(int i = 0; i < size; i++)
-            {
-                p.push_back(va_arg(factor, int));
-            }
-            va_end(factor);
-        }
-        void push(int a) {
-            p.push_back(a);
-        }*/
         Queue(initializer_list<int> a = {}) {
             p = a;
         }

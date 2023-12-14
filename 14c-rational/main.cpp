@@ -4,7 +4,7 @@ using namespace std;
 
 
 int main() {
-    Rational q1 (1.4);
+    Rational q1 (1, 0);
     Rational q2 (0.25);
     Rational q3;
     q1.print();

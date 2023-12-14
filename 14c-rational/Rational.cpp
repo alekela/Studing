@@ -5,7 +5,10 @@ using namespace std;
 
 Rational::Rational (int ch1, int zn1) {
     ch = ch1;
-    if (zn1 != 0) {
+    try {
+        if (zn1 == 0) {
+            throw overflow_error("Division by zero");
+        }
         zn = zn1;
         long int tmp = NOD(ch, zn);
         if (tmp > 1) {
@@ -13,8 +16,9 @@ Rational::Rational (int ch1, int zn1) {
             zn /= tmp;
         }
     }
-    else {
-        cout << "ОШИБКА, НУЛЕВОЙ ЗНАМЕНАТЕЛЬ" << endl;
+    catch (overflow_error) {
+        cout << "Division by zero, denominator changed";
+        zn = 1;
     }
 }
 
