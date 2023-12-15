@@ -7,65 +7,57 @@
 
 template <typename T>
 struct Node{
-    struct node_tree *left;
-    struct node_tree *right;
+    struct Node* left;
+    struct Node* right;
     T key;
 };
 
 template <typename T>
 class Binary_Tree {
 private:
-    vector<T> args;
-    Node *p;
+    Node<T>* root;
 
-    void sort() {
-        for (int i = 0; i < args.size(); i++) {
-            for (int j = 0; j < args.size() - 1 - i; j++) {
-                if (args[j] > args[j + 1]) {
-                    swap(args[j], args[j + 1]);
-                }
-            }
-        }
-    }
-
-public:
-    Binary_Tree(initializer_list<T> a = {}) {
-        args = a;
-        sort();
-    }
-
-    void insert(T val) {
-        if (p == NULL) {
-            p = (Node *) malloc(sizeof(Node));
-            p->key = val;
-            p->left = NULL;
-            p->right = NULL;
+    void inside_insert(Node<T>** p, int val) {
+        if ((*p) == NULL) {
+            (*p) = (Node<T>*) malloc(sizeof(Node<T>));
+            (*p)->key = val;
+            (*p)->left = NULL;
+            (*p)->right = NULL;
         } else {
-            if (val < p->key){
-                insert((p->left), val);
+            if (val < (*p)->key){
+                inside_insert(&((*p)->left), val);
             }
             else {
-                insert((p->right), val);
+                inside_insert(&((*p)->right), val);
             }
         }
     }
 
-    void preOrder() {
+    void inside_preOrder(Node<T> *p) {
         if (p != NULL) {
             printf("%3d", p->key);
-            preOrder(p->left);
-            preOrder(p->right);
+            inside_preOrder(p->left);
+            inside_preOrder(p->right);
         }
     }
 
-    Node* find(T value){
+    void inside_lnrOrder(Node<T>* p) {
+        if (p != NULL) {
+            inside_lnrOrder(p->left);
+            printf("%3d ", p->key);
+            inside_lnrOrder(p->right);
+        }
+    }
+
+    Node<T>* inside_find(Node<T> *p, int value){
         if (p != NULL){
             if (p->key == value){
                 return p;
             }
-            Node *p1, *p2;
-            p1 = find(p->left, value);
-            p2 = find(p->right, value);
+            Node<T>* p1;
+            Node<T>* p2;
+            p1 = inside_find(p->left, value);
+            p2 = inside_find(p->right, value);
             if (p1 != NULL){
                 return p1;
             }
@@ -76,73 +68,87 @@ public:
         return NULL;
     }
 
-    int del(int value){
-        if (find(*p, value) == NULL){
+    int inside_del(Node<T> **p, int value){
+        if (inside_find(*p, value) == NULL){
             return -1;
         }
 
-        if (p != NULL) {
-            if (p->key == value) {
-                Node *p1;
-                if (p->right == NULL && p->left == NULL) {
+        if ((*p) != NULL) {
+            if ((*p)->key == value) {
+                Node<T>* p1;
+                if ((*p)->right == NULL && (*p)->left == NULL) {
                     return 0;
                 }
-                else if (p->right != NULL && p->left != NULL){
-                    p1 = p->right;
+                else if ((*p)->right != NULL && (*p)->left != NULL){
+                    p1 = (*p)->right;
                     while (p1->left != NULL){
                         p1 = p1->left;
                     }
-                    Node *p2;
+                    Node<T>** p2;
                     p2 = p;
-                    del(p2, p1->key);
-                    p1->left = p->left;
-                    p1->right = p->right;
-                    p = p1;
+                    inside_del(p2, p1->key);
+                    p1->left = (*p)->left;
+                    p1->right = (*p)->right;
+                    (*p) = p1;
                 }
-                else if (p->right == NULL && p->left != NULL){
-                    p1 = p->right;
-                    p = p1;
+                else if ((*p)->right == NULL && (*p)->left != NULL){
+                    p1 = (*p)->left;
+                    (*p) = p1;
                 }
-                else if (p->right != NULL && p->left == NULL){
-                    p1 = p->left;
-                    p = p1;
+                else if ((*p)->right != NULL && (*p)->left == NULL){
+                    p1 = (*p)->right;
+                    (*p) = p1;
                 }
             }
             else {
                 int state = 1;
-                state = del((p->left), value);
+                state = inside_del(&((*p)->left), value);
                 if (state == 0){
-                    p->left = NULL;
+                    (*p)->left = NULL;
                 }
-                state = del((p->right), value);
+                state = inside_del(&((*p)->right), value);
                 if (state == 0){
-                    p->right = NULL;
+                    (*p)->right = NULL;
                 }
             }
         }
         return 1;
     }
+
+public:
+    Binary_Tree() {
+        root = NULL;
+    }
+
+    void insert(T val) {
+        inside_insert(&root, val);
+    }
+
+    void preOrder() {
+        inside_preOrder(root);
+    }
+
+    void lnrOrder() {
+        inside_lnrOrder(root);
+    }
+
+    Node<T>* find(T value){
+        return inside_find(root, value);
+    }
+
+    int del(T value){
+        return inside_del(&root, value);
+    }
 };
 
 
 int main() {
-    Node *root = NULL;
-    int tmp;
-    std::cin >> tmp;
-    while (tmp != 0) {
-        insert(&root, tmp);
-        std::cin >> tmp;
+    Binary_Tree<int> tree;
+    for (int i = 10; i > 2; i--) {
+        tree.insert(i);
     }
-
-    preOrder(root);
-    printf("\n");
-
-    int value, error;
-    scanf("%d", &value);
-    error = del(&root, value);
-    if (error == -1){
-        printf("!\n");
-    }
-    preOrder(root);
-    printf("\n");
+    tree.preOrder();
+    std::cout << std::endl;
+    tree.del(5);
+    tree.preOrder();
 }
