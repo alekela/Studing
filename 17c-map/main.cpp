@@ -1,65 +1,51 @@
 #include <iostream>
-#include <map>
-#include <string>
 #include <fstream>
-#include "windows.h"
-#include <clocale> //Обязательно для функции setlocale()
-
-
+#include <string>
+#include <map>
+#include <algorithm>
+#include <windows.h>
 
 using namespace std;
 
 
-struct Rchar
-{
-    char first;
-    char second;
-};
+void stat_tolstoy(string name) {
+    map<char, int> alphabet{};
+    char c;
 
+    for (int i = 0, c = '�'; i < 33; ++i,++c){
+        alphabet[c] = 0;
+    }  
 
-int main() {
-    map<wchar_t, long int> freqs;
-    char char_alphabet[33] = {'ё', 'й', 'ц','у','к','е','н','г','ш',
-    'щ','з','х','ъ','ф','ы','в','а','п','р','о','л','д','ж','э',
-    'я','ч','с','м','и','т','ь','б','ю'};
+    string s;
+    ifstream file(name);
 
-    wchar_t alphabet[33] = {'ё', 'й', 'ц','у','к','е','н','г','ш',
-    'щ','з','х','ъ','ф','ы','в','а','п','р','о','л','д','ж','э',
-    'я','ч','с','м','и','т','ь','б','ю'};
-    for (int i = 0; i < 33; i++) {
-        freqs[alphabet[i]] = 0;
-    }
-
-    ifstream file;
-    string data;
-    file.open ("example.txt");
-    file >> data;
-    Rchar tmp;
-    wchar_t letter;
-    int flag = 0;
-    while (file) {
-        for (char i : data) {
-            if (flag == 0) {
-                tmp.first = i;
-                flag++;
+    while(getline(file, s)){ 
+        for(const auto& i : s) {
+            if ('�' <= i && i <= '�'){
+                alphabet[i]++;
             }
-            else if (flag == 1) {
-                tmp.second = i;
-                flag++;
-            }
-            if (flag == 2) {
-                letter = ((int) tmp.first + 256) * 256 + 256 + (int)tmp.second;
-                freqs[letter]++;
-                flag = 0;
+            else if ('�' <= i && i <= '�'){
+                alphabet[char(toupper(i))]++;
             }
         }
-        file >> data;
+
     }
     file.close();
-    for (int i = 0; i < 33; i++) {
-        if (freqs[alphabet[i]] != 0) {
-            cout << (char) (int)alphabet[i] << "  " << freqs[alphabet[i]] << endl;
-        }
+    for (auto it = alphabet.begin(); it != alphabet.end(); ++it){
+        cout << (*it).first << " : " << (*it).second << endl;
     }
+    cout << endl << endl;
+}
+
+
+int main(){
+    SetConsoleCP(1251);
+    SetConsoleOutputCP(1251);
+    setlocale(LC_ALL, "Russian");
+
+    stat_tolstoy("volume_1.txt");
+    stat_tolstoy("volume_2.txt");
+    stat_tolstoy("volume_3.txt");
+    stat_tolstoy("volume_4.txt");
     return 0;
 }
