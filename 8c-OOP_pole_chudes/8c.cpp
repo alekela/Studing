@@ -47,23 +47,23 @@ void Narator::set_word(string word) {
 }
 
 void Narator::say_start() {
-    cout << "Как Вас зовут, игрок?" << endl;
+    cout << "What is your name?" << endl;
     cin >> player_name;
-    cout << "Добро пожаловать на игру Поле Чудес, " << player_name << ", начнём игру!" << endl;
+    cout << "Welcome to your game, " << player_name << ", let's start!" << endl;
 }
 
 void Narator::get_letter() {
     hidden_word.print_word();
     char letter;
-    cout << player_name << ", назовите букву:" << endl;
+    cout << player_name << ", give a letter:" << endl;
     cin >> letter;
     check_error(letter);
     int ans = hidden_word.check_letter(letter);
     if (ans) {
-        cout << "Верно!!! Откройте букву " << letter << "!!!" << endl;
+        cout << "Right!!! Open the letter " << letter << "!!!" << endl;
     }
     else {
-        cout << "Извините, такой буквы в слове нет!" << endl;
+        cout << "Sorry, there is no such letter!" << endl;
     }
 }
 
@@ -95,7 +95,7 @@ void Pole_chudes::start_game() {
             narator.get_letter();
         }
         catch (exception) {
-            cout << "У Вас всё хорошо? Такой буквы даже нет в алфавите..." << endl;
+            cout << "Are you serious? There is not a letter at all..." << endl;
         }
     }
     end_game();
@@ -107,7 +107,7 @@ bool Pole_chudes::check_end() {
 
 void Pole_chudes::end_game() {
     char ans;
-    cout << "Хотите начать новую игру? Y/N" << endl;
+    cout << "Would you like to start a new game? Y/N" << endl;
     cin >> &ans;
     if (ans == 'Y' || ans == 'y') {
         start_game();

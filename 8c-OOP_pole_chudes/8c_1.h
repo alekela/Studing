@@ -41,7 +41,7 @@ class Narator {
     private:
     void check_error(char letter);
     string used_letters;
-    string appropriate_letters = "йцукенгшщзхъфывапролдэячсмитьбюё";
+    string appropriate_letters = "С‘Р№С†СѓРєРµРЅРіС€С‰Р·С…СЉС„С‹РІР°РїСЂРѕР»РґР¶СЌСЏС‡СЃРјРёС‚СЊР±СЋ";
     Output_word hidden_word;
     string player_name;
 };
@@ -57,7 +57,7 @@ class Pole_chudes {
 
     void end_game();
     Narator narator;
-    string dictionary[3] = {"стегозавр", "молодец", "апертура"};
+    string dictionary[3] = {"СЃС‚РµРіРѕР·Р°РІСЂ", "РјРѕР»РѕРґРµС†", "РєРѕСЂРѕРІР°"};
     int dictionary_len = 3;
 }; 
 
